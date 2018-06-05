@@ -1,14 +1,17 @@
-const http = require('http');
+var express = require('express');
+var exphbs  = require('express-handlebars');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+var app = express();
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello Me\n');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+app.get('/', function (req, res) {
+    res.render('home',{maintenant: (new Date()).toLocaleTimeString()
 });
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+app.get('/produit', function (req, res) {
+  res.render('produit')
 });
+app.use(express.static('client'));
+
+app.listen(3000);
